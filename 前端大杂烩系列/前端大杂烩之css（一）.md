@@ -1,4 +1,4 @@
-#### 1. 盒模型，box-sizing。   
+#### 1. 盒模型，box-sizing
 &emsp;&emsp;CSS中的盒模型一般分为标准W3C盒模型和IE盒模型。在标准盒模型中，width 和 height 指的是内容区域的宽度和高度。而在IE盒模型中，内容区域的宽度和高度还包括了边框、内边距。  
 &emsp;&emsp;在CSS3中新增加了box-sizing属性，能够事先定义盒模型的尺寸解析方式。border-box重新定义CSS2.1中盒模型组成的模式，让元素维持IE传统的盒模型（IE6以下版本和IE6-7怪异模式）。   
 #### 2. CSS3新特性  
