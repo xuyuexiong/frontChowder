@@ -259,4 +259,8 @@
 
 &emsp;&emsp;&emsp;key就是刚才我们设置时的cookie变量名
 
-&emsp;&emsp;&emsp;我们只需要将函数赋值给新的变量即可调用这个值，例如：var n = cookie.get(key);
+&emsp;&emsp;&emsp;我们只需要将函数赋值给新的变量即可调用这个值，例如：var n = cookie.get(key);  
+
+<br>
+
+&emsp;**引用链接**：http://www.frontopen.com/1943.html
