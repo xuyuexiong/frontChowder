@@ -142,4 +142,121 @@
     // 序列化反序列化法
     function deepClone(obj) {
         return JSON.parse(JSON.stringify(obj))
-    }
+    }  
+    
+#### 22. 编写一个通用的事件监听函数  
+
+&emsp;**把所有方法封装到一个对象里**。  
+
+>  
+    // 考虑到各种兼容情况
+    var EventUtil = {
+      // 添加DOM事件
+      addEvent: function(element, type, handler) {
+        if(element.addEventListener) { //DOM2级
+          element.addEventListener(type, handler, false);
+        }else if(element.attachEvent) {  //IE
+          element.attachEvent("on"+ type, handler);
+        }else {
+          element["on" + type] = handler;
+        }
+      },
+      // 移除DOM事件
+      removeEvent: function(element, type, handler) {
+        if(element.removeEventListener) { //DOM2级
+          element.removeEventListener(type, handler, false);
+        }else if(element.detachEvent) {  //IE
+          element.detachEvent("on"+ type, handler);
+        }else {
+          element["on" + type] = null;
+        }
+      },
+      // 阻止事件冒泡
+      stopPropagation: function(ev) {
+        if(ev.stopPropagation) {
+          ev.stopPropagation();
+        }else {
+          ev.cancelBubble = true;
+        }
+      },
+      // 阻止默认事件
+      preventDefault: function(ev) {
+        if(ev.preventDefault) {
+          ev.preventDefaule();
+        }else {
+          ev.returnValue = false;
+        }
+      },
+      // 获取事件源对象
+      getTarget: function(ev) {
+        return event.target || event.srcElement;
+      },
+      // 获取事件对象
+      getEvent: function(e) {
+        var ev = e || window.event;
+        if(!ev) {
+          var c = this.getEvent.caller;
+          while(c) {
+            ev = c.arguments[0];
+            if(ev && Event == ev.constructor) {
+              break;
+            }
+            c = c.caller;
+          }
+        }
+        return ev;
+      }
+    };  
+    
+    //调用  
+    var btn = document.getElementById("myBtn"),
+    handler = function () {
+        alert("Clicked");
+    };
+
+    EventUtil.addHandler(btn,"click",handler);
+    EventUtil.removeHandler(btn,"click",handler);  
+    
+#### 23. web端cookie的设置和获取  
+
+&emsp;**简单封装一个设置获取cookie的方法到一个对象里**
+
+>  
+    var cookie = {
+    	set:function(key,val,time){//设置cookie方法
+    		var date=new Date(); //获取当前时间
+    		var expiresDays=time;  //将date设置为n天以后的时间
+    		date.setTime(date.getTime()+expiresDays*24*3600*1000); //格式化为cookie识别的时间
+    		document.cookie=key + "=" + val +";expires="+date.toGMTString();  //设置cookie
+    	},
+    	get:function(key){//获取cookie方法
+    		/*获取cookie参数*/
+    		var getCookie = document.cookie.replace(/[ ]/g,"");  //获取cookie，并且将获得的cookie格式化，去掉空格字符
+    		var arrCookie = getCookie.split(";")  //将获得的cookie以"分号"为标识 将cookie保存到arrCookie的数组中
+    		var tips;  //声明变量tips
+    		for(var i=0;i<arrCookie.length;i++){   //使用for循环查找cookie中的tips变量
+    			var arr=arrCookie[i].split("=");   //将单条cookie用"等号"为标识，将单条cookie保存为arr数组
+    			if(key==arr[0]){  //匹配变量名称，其中arr[0]是指的cookie名称，如果该条变量为tips则执行判断语句中的赋值操作
+    				tips=arr[1];   //将cookie的值赋给变量tips
+    				break;   //终止for循环遍历
+    			} 
+    		}
+    		return tips;
+    	}
+    }  
+    
+&emsp;设置cookie的方法为：cookie.set(key,val,time)  
+
+&emsp;&emsp;&emsp;key可以理解为cookie的变量名
+
+&emsp;&emsp;&emsp;val可以理解为这个cookie所带有的值
+
+&emsp;&emsp;&emsp;time是cookie的超时时间，单位为天
+
+ 
+
+&emsp;获取cookie的方法为：cookie.get(key)
+
+&emsp;&emsp;&emsp;key就是刚才我们设置时的cookie变量名
+
+&emsp;&emsp;&emsp;我们只需要将函数赋值给新的变量即可调用这个值，例如：var n = cookie.get(key);
