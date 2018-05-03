@@ -35,4 +35,54 @@
 <br>
 &emsp;&emsp;**解决办法**  
 <br>
-&emsp;&emsp;手动解除循环引用
+&emsp;&emsp;手动解除循环引用  
+
+&emsp;**引用链接**：https://www.cnblogs.com/dolphinX/p/3348468.html  
+
+#### 26. DOM事件中target和currentTarget的区别  
+
+&emsp;**target**：触发事件的某个具体对象，只会出现在事件流的目标阶段（谁触发谁命中，所以肯定是目标阶段）。  
+
+&emsp;**currentTarget**：绑定事件的对象，恒等于this，可能出现在事件流的任意一个阶段中。  
+
+&emsp;&emsp;通常情况下target和currentTarget是一致的，我们只要使用target即可，但有一种情况必须区分这三者的关系，那就是在父子嵌套的关系中，父元素绑定了事件，单击了子元素（根据事件流，在不阻止事件流的前提下他会传递至父元素，导致父元素的事件处理函数执行），这时候currentTarget指向的是父元素，因为他是绑定事件的对象，而target指向了子元素，因为他是触发事件的那个具体对象。  
+
+#### 27. 内存泄漏的原因和场景   
+
+&emsp;**原因**
+
+&emsp;&emsp;当两个对象相互引用时，构成了循环引用，垃圾回收机制使用标记清除的方式，循环引用能被正常清除，但如果是引用计数的方式，垃圾回收器可能不能正确识别循环引用，这个时候DOM 对象和 JavaScript 对象均不能被销毁，造成了内存泄漏。  
+
+&emsp;**场景**  
+
+&emsp;1、给DOM对象添加的属性是一个对象的引用。  
+
+>  
+    var obj = {};   
+    document.getElementById('id1').property = obj;  //如果DOM不被消除，则obj会一直存在，造成内存泄漏    
+    
+&emsp;2、DOM对象与JS对象相互引用。
+
+>  
+    function obj(element) {   
+        this.elementReference = element; // 为obj(js)对象的属性绑定element(DOM)对象  
+        element.property = this;//为element(DOM)对象的属性绑定obj(js)对象  
+    }   
+    new obj(document.getElementById('id1'));  
+
+&emsp;3、给DOM对象用attachEvent绑定事件。  
+
+>  
+    function click() {}   
+    element.attachEvent("onclick", click);   
+    
+&emsp;4、从外到内执行appendChild。这时即使调用removeChild也无法释放。  
+
+>  
+    var parentDiv = document.createElement("div");   
+    var childDiv = document.createElement("div");   
+    document.body.appendChild(parentDiv);   
+    parentDiv.appendChild(childDiv);     
+    
+&emsp;5、反复重写同一个属性会造成内存大量占用(但关闭IE后内存会被释放)。  
+  
