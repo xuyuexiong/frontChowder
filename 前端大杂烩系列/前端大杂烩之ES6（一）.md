@@ -100,3 +100,48 @@
     console.log(Sub.prototype.sex) // undefined
     // 子类原型对象上没有父类构造函数中赋值的属性，不是组合式继承
 
+#### 3. Promise封装ajax  
+
+&emsp;ajax的简单实现  
+
+>  
+    // 简略实现ajax
+    function ajax(url,type){
+        return new Promise((resolve,reject) => {
+            var XHR = new XHRHttpRequest();
+            XHR.open(type,url,true);
+            XHR.send();
+            XHR.onreadystatechange = () => {
+                if(XHR.readyState == 4) {
+                    if(XHR.status == 200) {
+                        try {
+                            let response = JSON.parse(XHR.responseText);
+                            resolve(response);
+                        } catch(e) {
+                            reject(e);
+                        }
+                    } else {
+                        reject(new Error(XHR.statusText));
+                    }
+                }
+            }
+        });
+    }  
+    
+#### 4. let const的优点  
+
+&emsp;**Let 的优点**  
+
+&emsp;&emsp;1、不存在变量提升，即变量不能再其声明之前使用;  
+
+&emsp;&emsp;2、暂时性死区，在块级作用域内存在 let 命令 ，他所声明的变量就绑定到这个区域，不在受其他情况的影响。  
+
+&emsp;&emsp;3、不能重复声明;  
+
+&emsp;&emsp;4、块级作用域
+
+&emsp;**const 的优点**  
+
+&emsp;&emsp;1、一旦声明，其值就不能更改；
+
+&emsp;&emsp;2、与let相似的一系类优点；  
