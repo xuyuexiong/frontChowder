@@ -69,3 +69,16 @@
 
 &emsp;箭头函数本身没有this，它会直接绑定到它的父级作用域内的this，也就是定义它时的作用域内的this值。
 
+#### 8.babel是如何将es6代码编译成es5的  
+
+&emsp;**babel的工作原理**  
+
+&emsp;&emsp;babel是一个转译器，感觉相对于编译器compiler，叫转译器transpiler更准确，因为它只是把同种语言的高版本规则翻译成低版本规则，而不像编译器那样，输出的是另一种更低级的语言代码。  
+
+&emsp;&emsp;但是和编译器类似，babel的转译过程也分为三个阶段：parsing、transforming、generating，以ES6代码转译为ES5代码为例，babel转译的具体过程如下：
+
+> ES6代码输入 ==》 babylon进行解析 ==》 得到AST
+==》 plugin用babel-traverse对AST树进行遍历转译 ==》 得到新的AST树
+==》 用babel-generator通过AST树生成ES5代码  
+
+&emsp;&emsp;此外，还要注意很重要的一点就是，babel只是转译新标准引入的语法，比如ES6的箭头函数转译成ES5的函数；而新标准引入的新的原生对象，部分原生对象新增的原型方法，新增的API等（如Proxy、Set等），这些babel是不会转译的，需要用户自行引入polyfill来解决。
