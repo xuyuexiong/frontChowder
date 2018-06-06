@@ -40,4 +40,36 @@
 
 &emsp;&emsp;&emsp;&emsp;优点：首先，借助 co 和 generator，很好地解决了异步流程控制和异常捕获问题。其次，Koa 把 Express 中内置的 router、view 等功能都移除了，使得框架本身更轻量。  
 
-&emsp;&emsp;&emsp;&emsp;缺点：社区相对较小
+&emsp;&emsp;&emsp;&emsp;缺点：社区相对较小  
+
+#### 3. NodeJs适合做什么样的业务  
+
+&emsp;&emsp;**为什么用Node**  
+
+&emsp;&emsp;&emsp;&emsp;1、天然的事件驱动可以用于处理并发；  
+
+&emsp;&emsp;&emsp;&emsp;2、降低前后端协作成本，提高开发效率；  
+
+&emsp;&emsp;&emsp;&emsp;3、职责分明，前端的问题前端er自己负责，自己解决；  
+
+&emsp;&emsp;&emsp;&emsp;4、前后端同构，前端解决方案同步到Server-side；   
+
+&emsp;&emsp;**什么业务场景使用Node**  
+
+&emsp;&emsp;&emsp;&emsp;1、页面需求大，从样式到性能都一直迭代；  
+
+&emsp;&emsp;&emsp;&emsp;2、后端接口丰富，页面数据资源方多；  
+
+&emsp;&emsp;&emsp;&emsp;3、纯渲染，对安全性要求不高，无计算能力；  
+
+&emsp;&emsp;**Nodejs不适合的领域**  
+
+&emsp;&emsp;&emsp;&emsp;1、计算密集型应用，让Javascript和C去拼计算性能，估计是不可能赢的；  
+
+&emsp;&emsp;&emsp;&emsp;2、内存控制，让Javascript和Java比较复杂数据类型定义，也是很困难的。因为Javascript的面向对象是基于JSON的，而Java是直接使用内存结构。所以，通过JSON序列化和反序列的过程控制内存，Javascript就已经输了；  
+
+&emsp;&emsp;&emsp;&emsp;3、大内存的应用，由于V8引擎有内存设计的限制，32位环境中最大堆是1G，64位环境中最大堆也不到2G，如果要一次读入10G数据，对于Nodejs来说也无法实现；  
+
+&emsp;&emsp;&emsp;&emsp;4、静态服务器，虽然Nodejs的优势在IO密集集应用，但是和Nginx的处理静态资源还是有很大的差距；  
+
+&emsp;&emsp;&emsp;&emsp;5、不需要异步的应用：比如系统管理，自行化脚本等，还是Python更顺手，Nodejs的异步调用可能会给编程带来一些麻烦；
