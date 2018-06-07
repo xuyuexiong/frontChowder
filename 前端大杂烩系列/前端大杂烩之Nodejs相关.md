@@ -72,4 +72,12 @@
 
 &emsp;&emsp;&emsp;&emsp;4、静态服务器，虽然Nodejs的优势在IO密集集应用，但是和Nginx的处理静态资源还是有很大的差距；  
 
-&emsp;&emsp;&emsp;&emsp;5、不需要异步的应用：比如系统管理，自行化脚本等，还是Python更顺手，Nodejs的异步调用可能会给编程带来一些麻烦；
+&emsp;&emsp;&emsp;&emsp;5、不需要异步的应用：比如系统管理，自行化脚本等，还是Python更顺手，Nodejs的异步调用可能会给编程带来一些麻烦；  
+
+#### 4. NodeJs是如何实现高并发的？  
+
+&emsp;&emsp;NodeJs是单线程且支持高并发的脚本语言。可为什么单线程的NodeJs可以支持高并发呢？  
+
+&emsp;&emsp;I/O密集型处理是NodeJs的强项，因为NodeJs的I/O请求都是异步的（如：sql查询请求、文件流操作操作请求、http请求...）  
+
+&emsp;&emsp;I/O操作是由NodeJs的工作线程去执行的（NodeJs底层的libuv是多线程的线程池用来并行io操作），且主线程是不需要等待结果返回的，只要发出指令马上就可以去做其他的事情。
