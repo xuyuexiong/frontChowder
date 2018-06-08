@@ -80,4 +80,34 @@
 
 &emsp;&emsp;I/O密集型处理是NodeJs的强项，因为NodeJs的I/O请求都是异步的（如：sql查询请求、文件流操作操作请求、http请求...）  
 
-&emsp;&emsp;I/O操作是由NodeJs的工作线程去执行的（NodeJs底层的libuv是多线程的线程池用来并行io操作），且主线程是不需要等待结果返回的，只要发出指令马上就可以去做其他的事情。
+&emsp;&emsp;I/O操作是由NodeJs的工作线程去执行的（NodeJs底层的libuv是多线程的线程池用来并行io操作），且主线程是不需要等待结果返回的，只要发出指令马上就可以去做其他的事情。  
+
+#### 5. NodeJs的event loop原理  
+
+&emsp;&emsp;**Node.js的运行机制如下**  
+
+&emsp;&emsp;&emsp;&emsp;1、V8引擎解析JavaScript脚本。
+
+&emsp;&emsp;&emsp;&emsp;2、解析后的代码，调用Node API。
+
+&emsp;&emsp;&emsp;&emsp;3、libuv库负责Node API的执行。它将不同的任务分配给不同的线程，形成一个Event Loop（事件循环），以异步的方式将任务的执行结果返回给V8引擎。
+
+&emsp;&emsp;&emsp;&emsp;4、V8引擎再将结果返回给用户。  
+
+&emsp;&emsp;**event loop的事件处理机制如果运作的**  
+
+&emsp;&emsp;&emsp;&emsp;事件循环分为几个阶段，每个阶段都是按照先进先出的规则执行回调函数。按顺序执行每个阶段的回调函数队列，直至队列为空或是该阶段执行的回调函数达到该阶段所允许一次执行回调函数的最大限制后，才会将操作权移交给下一阶段。    
+
+&emsp;&emsp;**每个阶段的简单概要**  
+
+&emsp;&emsp;&emsp;&emsp;1、timers：执行setTimeout()和setInterval()预先设定的回调函数。  
+
+&emsp;&emsp;&emsp;&emsp;2、I/O callbacks：大部分执行都是timers阶段或是setImmediate()预先设定的并且出现异常的回调函数事件。  
+
+&emsp;&emsp;&emsp;&emsp;3、idle, prepare：NodeJs内部函数调用。  
+
+&emsp;&emsp;&emsp;&emsp;4、poll：检索新的I/O事件，NodeJs将在适当的时候阻塞。  
+
+&emsp;&emsp;&emsp;&emsp;5、check：setImmediate() 函数会在这个阶段执行。  
+
+&emsp;&emsp;&emsp;&emsp;6、close callbacks：执行一些诸如关闭事件的回调函数，如socket.on('close', ...) 。
